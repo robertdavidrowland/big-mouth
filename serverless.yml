@@ -4,6 +4,9 @@ plugins:
   - serverless-pseudo-parameters
   - serverless-sam
 
+custom:
+  api-gateway-url: https://czrz05mgkh.execute-api.eu-west-1.amazonaws.com
+
 provider:
   name: aws
   runtime: nodejs6.10
@@ -29,8 +32,8 @@ functions:
           path: /
           method: get
     environment:
-      restaurants_api: https://vnfa0e2uea.execute-api.eu-west-1.amazonaws.com/dev/restaurants
-      orders_api: https://vnfa0e2uea.execute-api.eu-west-1.amazonaws.com/dev/orders
+      restaurants_api: ${self:custom.api-gateway-url}/dev/restaurants
+      orders_api: ${self:custom.api-gateway-url}/dev/orders
       cognito_user_pool_id: eu-west-1_FaFt7TZSS
       cognito_client_id: 5pdr7qkfjou671dmotv6eei26k
 
@@ -82,8 +85,9 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
 
-    orderEventsStream:
-      Type: AWS::Kinesis::Stream
-      Properties:
-        Name: order-events
-        ShardCount: 1
+# Add Kinesis stream manually
+#    orderEventsStream:
+#      Type: AWS::Kinesis::Stream
+#      Properties:
+#        Name: order-events
+#        ShardCount: 1
